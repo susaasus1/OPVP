@@ -1,1 +1,1 @@
-![Архитектура](Acrhitecture.png)
+![Архитектура](Architecture.png)
