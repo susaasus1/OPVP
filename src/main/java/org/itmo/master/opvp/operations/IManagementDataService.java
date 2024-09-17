@@ -15,9 +15,10 @@ public interface IManagementDataService {
 
     void add(String key, String value);
 
-    void put(String key, String value);
+    void update(String key, String value);
 
     void remove(String key);
 
     void clear();
+
 }

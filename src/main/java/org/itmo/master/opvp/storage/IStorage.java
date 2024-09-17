@@ -16,7 +16,7 @@ public interface IStorage<K, V> {
 
     void add(K key, V value);
 
-    void put(K key, V value);
+    void update(K key, V value);
 
     void remove(K key);
 

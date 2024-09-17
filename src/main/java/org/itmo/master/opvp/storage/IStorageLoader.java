@@ -7,7 +7,7 @@ import java.util.concurrent.Executor;
 
 public interface IStorageLoader<K, V> {
 
-    Map<K, V> load();
+    IStorage<K, V> load();
 
     default CompletableFuture<Map<K, V>> asyncLoad(Executor executor) {
         return CompletableFuture.supplyAsync(this::load, executor)
