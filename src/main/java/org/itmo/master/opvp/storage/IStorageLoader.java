@@ -9,7 +9,7 @@ public interface IStorageLoader<K, V> {
 
     IStorage<K, V> load();
 
-    default CompletableFuture<Map<K, V>> asyncLoad(Executor executor) {
+    default CompletableFuture<IStorage<K, V>> asyncLoad(Executor executor) {
         return CompletableFuture.supplyAsync(this::load, executor)
                 .exceptionally(ex -> {
                     throw new CompletionException(ex);
