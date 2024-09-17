@@ -1,0 +1,1 @@
+![Архитектура](Architecture.png)
