@@ -14,6 +14,8 @@ public interface IStorage<K, V> {
     @Nullable
     V getIfPresent(K key);
 
+    void put(K key, V value);
+
     void add(K key, V value);
 
     void update(K key, V value);
