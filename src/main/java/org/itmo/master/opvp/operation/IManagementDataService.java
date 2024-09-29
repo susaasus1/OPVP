@@ -1,4 +1,4 @@
-package org.itmo.master.opvp.operations;
+package org.itmo.master.opvp.operation;
 
 import jakarta.annotation.Nullable;
 

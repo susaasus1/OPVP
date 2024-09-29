@@ -1,4 +1,4 @@
-package org.itmo.master.opvp.storage.storage;
+package org.itmo.master.opvp.storage.exception;
 
 public class StorageOverflowException extends RuntimeException {
 

@@ -3,6 +3,7 @@ package org.itmo.master.opvp.storage;
 import jakarta.annotation.Nullable;
 
 import java.util.List;
+import java.util.Map;
 
 //String String
 public interface IStorage<K, V> {
@@ -24,5 +25,8 @@ public interface IStorage<K, V> {
 
     void clear();
 
+    Map<String, String> getStorage();
+
+    StorageConfiguration getConfig();
 
 }
