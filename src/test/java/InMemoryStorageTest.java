@@ -28,7 +28,7 @@ class InMemoryStorageTest {
     void testPut_WhenOverflow_ShouldThrowException() {
         storage.put("key1", "value1");
         storage.put("key2", "value2");
-        // Exceeding the max memory usage
+
         assertThrows(StorageOverflowException.class, () -> {
             storage.put("key3", "a".repeat(1024)); // 1 ГБ
         });

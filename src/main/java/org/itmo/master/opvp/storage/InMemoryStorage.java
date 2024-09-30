@@ -1,6 +1,7 @@
 package org.itmo.master.opvp.storage;
 
 import jakarta.annotation.Nullable;
+import org.itmo.master.opvp.storage.exception.StorageNotFoundException;
 import org.itmo.master.opvp.storage.exception.StorageOverflowException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +65,7 @@ public final class InMemoryStorage<K, V> implements IStorage {
         try {
             var value = storage.get(key.toString());
             if (value == null) {
-                throw new RuntimeException("Объект с ключом '" + key + "' не найден");
+                throw new StorageNotFoundException("Объект с ключом '" + key + "' не найден");
             }
             return value;
         } finally {
@@ -113,7 +114,7 @@ public final class InMemoryStorage<K, V> implements IStorage {
             String oldValue = storage.getOrDefault(key.toString(), null);
 
             if (oldValue != null) {
-                throw new RuntimeException("Значение с ключем '" + key + "' уже существует");
+                throw new StorageNotFoundException("Значение с ключем '" + key + "' уже существует");
             }
 
             storage.put(key.toString(), value.toString());
@@ -131,7 +132,7 @@ public final class InMemoryStorage<K, V> implements IStorage {
             String oldValue = storage.get(keyString);
 
             if (oldValue == null) {
-                throw new RuntimeException("Объект с ключом '" + key + "' не найден");
+                throw new StorageNotFoundException("Объект с ключом '" + key + "' не найден");
             }
 
             long oldEntrySize = estimateSizeInBytes(keyString, oldValue);
@@ -159,7 +160,7 @@ public final class InMemoryStorage<K, V> implements IStorage {
                 long entrySize = estimateSizeInBytes(keyString, oldValue);
                 currentMemoryUsage.addAndGet(-entrySize);
             } else {
-                throw new RuntimeException("Объект с ключом '" + key + "' не найден");
+                throw new StorageNotFoundException("Объект с ключом '" + key + "' не найден");
             }
         } finally {
             lock.writeLock().unlock();

@@ -1,5 +1,7 @@
 package org.itmo.master.opvp.storage;
 
+import org.itmo.master.opvp.storage.exception.StorageLoaderException;
+
 import java.io.*;
 import java.util.HashMap;
 
@@ -12,15 +14,12 @@ public class StorageLoader implements IStorageLoader {
 
         try (ObjectInputStream ois = new ObjectInputStream(
                 getClass().getClassLoader().getResourceAsStream(config.filePath()))) {
-            System.out.println();
             HashMap<String, String> map = (HashMap<String, String>) ois.readObject();
             storage = new InMemoryStorage(map, config);
             return storage;
         } catch (IOException | ClassNotFoundException e) {
-            new RuntimeException("Не возможно загрузить данные!");
+            throw new StorageLoaderException("Не возможно загрузить данные!");
         }
-
-        return null;
     }
 
     @Override
@@ -30,7 +29,7 @@ public class StorageLoader implements IStorageLoader {
 
             oos.writeObject(storage.getStorage());
         } catch (IOException e) {
-            new RuntimeException("Не возможно сохранить данные!");
+            throw new StorageLoaderException("Не возможно сохранить данные!");
         }
     }
 }

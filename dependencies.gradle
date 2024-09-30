@@ -4,7 +4,6 @@ dependencyResolutionManagement { DependencyResolutionManagement it ->
     it.versionCatalogs {
         libs {
             version("kora", "1.1.6")
-            version("postgresql", "42.3.3")
 
             version("junit-jupiter", "5.8.1")
             version("junit-platform-launcher", "1.8.1")
@@ -29,15 +28,12 @@ dependencyResolutionManagement { DependencyResolutionManagement it ->
             library("kora-kafka", "ru.tinkoff.kora", "kafka").withoutVersion()
             library("kora-openapi-generator", "ru.tinkoff.kora", "openapi-generator").versionRef('kora')
             library("kora-http-client", "ru.tinkoff.kora", "http-client-async").withoutVersion()
-            library("kora-database-jdbc", "ru.tinkoff.kora", "database-jdbc").withoutVersion()
-            library("kora-database-flyway", "ru.tinkoff.kora", "database-flyway").withoutVersion()
             library("kora-config-common", "ru.tinkoff.kora", "config-common").withoutVersion()
             library("kora-config-hocon", "ru.tinkoff.kora", "config-hocon").withoutVersion()
 
 
             // libs
             library("reactor-core", "io.projectreactor", "reactor-core").version("3.5.11")
-            library("postgresql", "org.postgresql", "postgresql").versionRef("postgresql")
             library("slf4j", "org.slf4j", "slf4j-simple").versionRef("slf4j")
 
             //test libs
@@ -45,12 +41,8 @@ dependencyResolutionManagement { DependencyResolutionManagement it ->
             library("junit-jupiter", "org.junit.jupiter", "junit-jupiter").versionRef("junit-jupiter")
             library("junit-platform-launcher", "org.junit.platform", "junit-platform-launcher").version("1.8.1")
 
-            //integration test libs
             library("logback", "ch.qos.logback", "logback-classic").version("1.4.11")
-
             library("assertj", "org.assertj", "assertj-core").version("3.21.0")
-
-            library("java-jwt", "com.auth0", "java-jwt").version("4.4.0")
         }
     }
 }
