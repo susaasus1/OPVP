@@ -6,6 +6,7 @@ import ru.tinkoff.kora.http.common.annotation.HttpRoute;
 import ru.tinkoff.kora.http.common.annotation.Path;
 import ru.tinkoff.kora.http.common.annotation.Query;
 import ru.tinkoff.kora.http.server.common.annotation.HttpController;
+import ru.tinkoff.kora.json.common.annotation.Json;
 
 import java.util.List;
 
@@ -15,7 +16,6 @@ import static ru.tinkoff.kora.http.common.HttpMethod.PATCH;
 import static ru.tinkoff.kora.http.common.HttpMethod.POST;
 import static ru.tinkoff.kora.http.common.HttpMethod.PUT;
 
-@Component
 @HttpController("/api/v1")
 public final class ApiController {
 
@@ -26,11 +26,13 @@ public final class ApiController {
     }
 
     @HttpRoute(method = GET, path = "")
+    @Json
     public List<String> getAllValues() {
         return managementDataService.getAll();
     }
 
     @HttpRoute(method = GET, path = "/{key}")
+    @Json
     public String getValueByKey(
             @Path("key") String key,
             @Query("required") Boolean required) {

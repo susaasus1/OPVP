@@ -23,7 +23,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * Реализация String/String хранилища.
  * </p>
  */
-@Component
 public final class InMemoryStorage implements IStorage<String, String> {
 
     private static final Logger logger = LoggerFactory.getLogger(InMemoryStorage.class);
@@ -33,6 +32,7 @@ public final class InMemoryStorage implements IStorage<String, String> {
     private final long maxMemoryUsage;
     private final AtomicLong currentMemoryUsage = new AtomicLong(0);
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
+
 
 
     public InMemoryStorage(StorageConfiguration config) {

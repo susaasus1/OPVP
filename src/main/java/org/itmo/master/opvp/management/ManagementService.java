@@ -2,6 +2,8 @@ package org.itmo.master.opvp.management;
 
 import jakarta.annotation.Nullable;
 import org.itmo.master.opvp.storage.IStorage;
+import org.itmo.master.opvp.storage.InMemoryStorage;
+import org.itmo.master.opvp.storage.StorageConfiguration;
 import ru.tinkoff.kora.common.Component;
 
 import java.util.List;
@@ -11,8 +13,8 @@ public final class ManagementService implements IManagementDataService {
 
     private final IStorage<String, String> storage;
 
-    public ManagementService(IStorage<String, String> storage) {
-        this.storage = storage;
+    public ManagementService(StorageConfiguration configuration) {
+        this.storage = new InMemoryStorage(configuration);
     }
 
     @Override
