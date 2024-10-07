@@ -9,12 +9,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryStorageTest {
-    private InMemoryStorage<String, String> storage;
+    private InMemoryStorage storage;
 
     @BeforeEach
     void setUp() {
         StorageConfiguration config = new StorageConfiguration(1024L, null); // 1 KB limit
-        storage = new InMemoryStorage<>(config);
+        storage = new InMemoryStorage(config);
     }
 
     @Test

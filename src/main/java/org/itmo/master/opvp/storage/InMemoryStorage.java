@@ -23,7 +23,8 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * Реализация String/String хранилища.
  * </p>
  */
-public final class InMemoryStorage<K, V> implements IStorage {
+@Component
+public final class InMemoryStorage implements IStorage<String, String> {
 
     private static final Logger logger = LoggerFactory.getLogger(InMemoryStorage.class);
 
@@ -60,10 +61,10 @@ public final class InMemoryStorage<K, V> implements IStorage {
     }
 
     @Override
-    public String get(Object key) {
+    public String get(String key) {
         lock.readLock().lock();
         try {
-            var value = storage.get(key.toString());
+            var value = storage.get(key);
             if (value == null) {
                 throw new StorageNotFoundException("Объект с ключом '" + key + "' не найден");
             }
@@ -75,26 +76,26 @@ public final class InMemoryStorage<K, V> implements IStorage {
 
     @Nullable
     @Override
-    public String getIfPresent(Object key) {
+    public String getIfPresent(String key) {
         lock.readLock().lock();
         try {
-            return storage.get(key.toString());
+            return storage.get(key);
         } finally {
             lock.readLock().unlock();
         }
     }
 
     @Override
-    public void put(Object key, Object value) {
+    public void put(String key, String value) {
         lock.writeLock().lock();
         try {
-            long entrySize = estimateSizeInBytes(key.toString(), value.toString());
+            long entrySize = estimateSizeInBytes(key, value);
 
             if (currentMemoryUsage.get() + entrySize > maxMemoryUsage) {
                 throw new StorageOverflowException("Превышен лимит памяти в " + maxMemoryUsage / (1024 * 1024 * 1024) + " ГБ");
             }
 
-            storage.put(key.toString(), value.toString());
+            storage.put(key, value);
             currentMemoryUsage.addAndGet(entrySize);
         } finally {
             lock.writeLock().unlock();
@@ -102,22 +103,22 @@ public final class InMemoryStorage<K, V> implements IStorage {
     }
 
     @Override
-    public void add(Object key, Object value) {
+    public void add(String key, String value) {
         lock.writeLock().lock();
         try {
-            long entrySize = estimateSizeInBytes(key.toString(), value.toString());
+            long entrySize = estimateSizeInBytes(key, value);
 
             if (currentMemoryUsage.get() + entrySize > maxMemoryUsage) {
                 throw new StorageOverflowException("Превышен лимит памяти в " + maxMemoryUsage / (1024 * 1024 * 1024) + " ГБ");
             }
 
-            String oldValue = storage.getOrDefault(key.toString(), null);
+            String oldValue = storage.getOrDefault(key, null);
 
             if (oldValue != null) {
                 throw new StorageNotFoundException("Значение с ключем '" + key + "' уже существует");
             }
 
-            storage.put(key.toString(), value.toString());
+            storage.put(key, value);
             currentMemoryUsage.addAndGet(entrySize);
         } finally {
             lock.writeLock().unlock();
@@ -125,24 +126,23 @@ public final class InMemoryStorage<K, V> implements IStorage {
     }
 
     @Override
-    public void update(Object key, Object value) {
+    public void update(String key, String value) {
         lock.writeLock().lock();
         try {
-            String keyString = key.toString();
-            String oldValue = storage.get(keyString);
+            String oldValue = storage.get(key);
 
             if (oldValue == null) {
                 throw new StorageNotFoundException("Объект с ключом '" + key + "' не найден");
             }
 
-            long oldEntrySize = estimateSizeInBytes(keyString, oldValue);
-            long newEntrySize = estimateSizeInBytes(keyString, value.toString());
+            long oldEntrySize = estimateSizeInBytes(key, oldValue);
+            long newEntrySize = estimateSizeInBytes(key, value);
 
             if (currentMemoryUsage.get() - oldEntrySize + newEntrySize > maxMemoryUsage) {
                 throw new StorageOverflowException("Превышен лимит памяти в " + maxMemoryUsage / (1024 * 1024 * 1024) + " ГБ");
             }
 
-            storage.put(keyString, value.toString());
+            storage.put(key, value);
             currentMemoryUsage.addAndGet(newEntrySize - oldEntrySize);
         } finally {
             lock.writeLock().unlock();
@@ -150,14 +150,13 @@ public final class InMemoryStorage<K, V> implements IStorage {
     }
 
     @Override
-    public void remove(Object key) {
+    public void remove(String key) {
         lock.writeLock().lock();
         try {
-            String keyString = key.toString();
-            String oldValue = storage.remove(keyString);
+            String oldValue = storage.remove(key);
 
             if (oldValue != null) {
-                long entrySize = estimateSizeInBytes(keyString, oldValue);
+                long entrySize = estimateSizeInBytes(key, oldValue);
                 currentMemoryUsage.addAndGet(-entrySize);
             } else {
                 throw new StorageNotFoundException("Объект с ключом '" + key + "' не найден");

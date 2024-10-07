@@ -1,4 +1,4 @@
-package org.itmo.master.opvp.operation;
+package org.itmo.master.opvp.management;
 
 import jakarta.annotation.Nullable;
 
@@ -14,6 +14,8 @@ public interface IManagementDataService {
     String getIfPresent(String key);
 
     void add(String key, String value);
+
+    void put(String key, String value);
 
     void update(String key, String value);
 

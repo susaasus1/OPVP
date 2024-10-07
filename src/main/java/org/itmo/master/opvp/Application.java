@@ -9,7 +9,8 @@ import ru.tinkoff.kora.http.server.undertow.UndertowHttpServerModule;
 @KoraApp
 public interface Application extends
         HoconConfigModule,
-        UndertowHttpServerModule {
+        UndertowHttpServerModule,
+        OpenApiManagementModule {
 
     static void main(String[] args) {
         KoraApplication.run(ApplicationGraph::graph);

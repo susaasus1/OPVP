@@ -1,6 +1,7 @@
 plugins {
     id "java"
     id "application"
+    id "io.swagger.core.v3.swagger-gradle-plugin" version "2.2.25"
 }
 
 repositories {
@@ -10,8 +11,8 @@ repositories {
 group = "org.itmo.master.opvp"
 version = "0.1.0-SNAPSHOT"
 
-sourceCompatibility = JavaVersion.VERSION_21
-targetCompatibility = JavaVersion.VERSION_21
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 mainClassName = "org.itmo.master.opvp.Application"
 

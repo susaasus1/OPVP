@@ -27,6 +27,7 @@ dependencyResolutionManagement { DependencyResolutionManagement it ->
 
             library("kora-kafka", "ru.tinkoff.kora", "kafka").withoutVersion()
             library("kora-openapi-generator", "ru.tinkoff.kora", "openapi-generator").versionRef('kora')
+            library("kora-openapi-management", "ru.tinkoff.kora", "openapi-management").versionRef('kora')
             library("kora-http-client", "ru.tinkoff.kora", "http-client-async").withoutVersion()
             library("kora-config-common", "ru.tinkoff.kora", "config-common").withoutVersion()
             library("kora-config-hocon", "ru.tinkoff.kora", "config-hocon").withoutVersion()
