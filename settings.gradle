@@ -1,2 +1,3 @@
 rootProject.name = 'OPVP'
 
+apply from: 'dependencies.gradle'

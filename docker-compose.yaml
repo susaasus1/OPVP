@@ -1,0 +1,10 @@
+version: '3'
+services:
+  application:
+    image: opvp
+    container_name: application
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+      - "8085:8085"
