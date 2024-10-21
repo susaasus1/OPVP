@@ -1,18 +1,19 @@
 import axios from 'axios';
 
-// Получаем IP и порт из localStorage
-const serverIP = localStorage.getItem('serverIP');
-const serverPort = localStorage.getItem('serverPort');
+const getBaseURL = () => {
+    const serverIP = localStorage.getItem('serverIP');
+    const serverPort = localStorage.getItem('serverPort');
+    return `http://${serverIP}:${serverPort}/api/v1/operations`;
+};
 
-// Динамически формируем baseURL
-const baseURL = `http://${serverIP}:${serverPort}/api/v1/operations`;
+const createApiInstance = () => {
+    return axios.create({
+        baseURL: getBaseURL(),
+    });
+};
 
-const api = axios.create({
-    baseURL: baseURL,  // Используем динамически сформированный URL
-});
-
-// Функции для работы с API
 export const getTableValues = async (table) => {
+    const api = createApiInstance();
     try {
         const response = await api.get(`/table/${table}`);
         return response.data;
@@ -22,6 +23,7 @@ export const getTableValues = async (table) => {
 };
 
 export const createTable = async (table) => {
+    const api = createApiInstance();
     try {
         await api.post(`/table/${table}`);
     } catch (error) {
@@ -30,6 +32,7 @@ export const createTable = async (table) => {
 };
 
 export const deleteTable = async (table) => {
+    const api = createApiInstance();
     try {
         await api.delete(`/table/${table}`);
     } catch (error) {
@@ -37,4 +40,3 @@ export const deleteTable = async (table) => {
     }
 };
 
-// Можно добавить другие функции для работы с API (getKey, postKey, updateKey, deleteKey)

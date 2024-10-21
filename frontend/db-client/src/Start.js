@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import { TextField, Button, Container, Typography, Box, Alert } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,6 +9,14 @@ function Start() {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
+    useEffect(() => {
+        const storedIp = localStorage.getItem('serverIP');
+        const storedPort = localStorage.getItem('serverPort');
+        if (storedIp && storedPort) {
+            navigate('/main');
+        }
+    }, [navigate]);
+
     const handleSave = () => {
         if (validateIp(ip) && validatePort(port)) {
             localStorage.setItem('serverIP', ip);
@@ -17,7 +25,7 @@ function Start() {
             setError('');
 
             setTimeout(() => {
-                navigate('/main');  // Переход на другую страницу, например, /main
+                navigate('/main');
             }, 1000);
         } else {
             setError('Введите корректные данные IP и порта.');
