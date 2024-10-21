@@ -1,57 +1,55 @@
-import org.itmo.master.opvp.storage.StorageLoader;
+import org.itmo.master.opvp.storage.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.itmo.master.opvp.storage.IStorage;
-import org.itmo.master.opvp.storage.InMemoryStorage;
-import org.itmo.master.opvp.storage.StorageConfiguration;
 
 import java.io.*;
-import java.util.HashMap;
+
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class StorageLoaderTest {
     private StorageLoader storageLoader;
     private StorageConfiguration config;
-    private IStorage storage;
 
     @BeforeEach
     void setUp() {
         storageLoader = new StorageLoader();
         config = new StorageConfiguration(1024L, "db.txt"); // 1 KB limit
-        storage = new InMemoryStorage(config);
     }
 
     @Test
     void testLoad_WhenFileExists_ShouldLoadStorage() throws IOException {
-        HashMap<String, String> sampleData = new HashMap<>();
-        sampleData.put("key1", "value1");
-        sampleData.put("key2", "value2");
-
+        Storage storage = new Storage(config);
+        storage.createTable("table1");
+        storage.getTable("table1").put("key1", "value1");
         try (ObjectOutputStream oos = new ObjectOutputStream(
                 new FileOutputStream("src/main/resources/" + config.filePath()))) {
 
-            oos.writeObject(sampleData);
+            oos.writeObject(storage.getStorage());
         }
 
-        InMemoryStorage loadedStorage = (InMemoryStorage) storageLoader.load(config);
+        Storage loadedStorage = (Storage) storageLoader.load(config);
+        System.out.println(storage.getStorage());
         assertNotNull(loadedStorage);
-        assertEquals("value1", loadedStorage.get("key1"));
-        assertEquals("value2", loadedStorage.get("key2"));
+        assertEquals("value1", loadedStorage.getTable("table1").get("key1"));
     }
 
 
 
     @Test
     void testSave_ShouldSaveStorage() {
-        storage.put("key1", "value1");
-        storageLoader.save(storage);
+        Storage storage = new Storage(config);
+        storage.createTable("table1");
+        storage.getTable("table1").put("key1", "value1");
+        storageLoader.save(storage, config);
 
         try (ObjectInputStream ois = new ObjectInputStream(
                 new FileInputStream("src/main/resources/"+ config.filePath()))) {
 
-            HashMap<String, String> savedData = (HashMap<String, String>) ois.readObject();
-            assertEquals("value1", savedData.get("key1"));
+            Map<String, Map<String, String>> savedData = (Map<String, Map<String, String>>) ois.readObject();
+            assertEquals("value1", savedData.get("table1").get("key1"));
+
         } catch (IOException | ClassNotFoundException e) {
             fail("Failed to load saved data");
         }

@@ -4,6 +4,7 @@ import org.itmo.master.opvp.storage.exception.StorageLoaderException;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class StorageLoader implements IStorageLoader {
@@ -14,8 +15,8 @@ public class StorageLoader implements IStorageLoader {
 
         try (ObjectInputStream ois = new ObjectInputStream(
                 getClass().getClassLoader().getResourceAsStream(config.filePath()))) {
-            HashMap<String, String> map = (HashMap<String, String>) ois.readObject();
-            storage = new InMemoryStorage(map, config);
+            Map<String, Map<String, String>> map = (Map<String, Map<String, String>>) ois.readObject();
+            storage = new Storage(map, config);
             return storage;
         } catch (IOException | ClassNotFoundException e) {
             throw new StorageLoaderException("Не возможно загрузить данные!");
@@ -23,9 +24,9 @@ public class StorageLoader implements IStorageLoader {
     }
 
     @Override
-    public void save(IStorage storage) {
+    public void save(IStorage storage, StorageConfiguration config) {
         try (ObjectOutputStream oos = new ObjectOutputStream(
-                new FileOutputStream("src/main/resources/" + storage))) {
+                new FileOutputStream("src/main/resources/" + config.filePath()))) {
 
             oos.writeObject(storage.getStorage());
         } catch (IOException e) {

@@ -1,10 +1,10 @@
-package org.itmo.master.opvp.management;
+package org.itmo.master.opvp.operation;
 
 import jakarta.annotation.Nullable;
 
 import java.util.List;
 
-public interface IManagementDataService {
+public interface IOperationService {
 
     List<String> getAll();
 
