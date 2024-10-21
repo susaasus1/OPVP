@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Client</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        h1 {
+            text-align: center;
+        }
+        .form-container, .table-container {
+            margin: 20px auto;
+            max-width: 600px;
+        }
+        .form-container {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label, input, button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+        }
+        input, button {
+            padding: 10px;
+        }
+        .table-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h1>Database Client</h1>
+
+<!-- Форма для создания таблицы -->
+<div class="form-container">
+    <h2>Create Table</h2>
+    <form id="create-table-form">
+        <label for="table-name">Table Name:</label>
+        <input type="text" id="table-name" placeholder="Enter table name" required>
+        <button type="submit">Create Table</button>
+    </form>
+</div>
+
+<div class="form-container">
+    <h2>Add Data to Table</h2>
+    <form id="add-data-form">
+        <label for="table-name">Table Name:</label>
+        <input type="text" id="table-name2" placeholder="Enter table name" required>
+
+        <label for="key">Key:</label>
+        <input type="text" id="key" placeholder="Enter key" required>
+
+        <label for="value">Value:</label>
+        <input type="text" id="value" placeholder="Enter value" required>
+
+        <button type="submit">Add Data</button>
+    </form>
+</div>
+
+<!-- Отображение таблицы -->
+<div class="table-container">
+    <h2>Table Data</h2>
+    <table id="data-table">
+        <thead>
+        <tr>
+            <th>Key</th>
+            <th>Value</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="table-body">
+        <!-- Данные будут динамически подгружены сюда -->
+        </tbody>
+    </table>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>

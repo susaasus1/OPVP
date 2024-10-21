@@ -6,21 +6,25 @@ import java.util.List;
 
 public interface IOperationService {
 
-    List<String> getAll();
+    void createTable(String tableName);
 
-    String get(String key);
+    void dropTable(String tableName);
+
+    List<String> getAll(String tableName);
+
+    String get(String tableName, String key);
 
     @Nullable
-    String getIfPresent(String key);
+    String getIfPresent(String tableName, String key);
 
-    void add(String key, String value);
+    void add(String tableName, String key, String value);
 
-    void put(String key, String value);
+    void put(String tableName, String key, String value);
 
-    void update(String key, String value);
+    void update(String tableName, String key, String value);
 
-    void remove(String key);
+    void remove(String tableName, String key);
 
-    void clear();
+    void clear(String tableName);
 
 }
