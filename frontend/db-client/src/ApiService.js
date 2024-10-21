@@ -40,3 +40,12 @@ export const deleteTable = async (table) => {
     }
 };
 
+export const getAllTables = async () => {
+    const api = createApiInstance();
+    try {
+        const response = await api.get('/tables');
+        return response.data;
+    } catch (error) {
+        throw error.response || error;
+    }
+};
