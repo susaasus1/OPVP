@@ -19,8 +19,8 @@ function TableManager() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    const [tables, setTables] = useState([]); // Состояние для хранения списка таблиц
-    const [loadingTables, setLoadingTables] = useState(true); // Состояние для загрузки таблиц
+    const [tables, setTables] = useState([]);
+    const [loadingTables, setLoadingTables] = useState(true);
 
     useEffect(() => {
         const fetchTables = async () => {
@@ -41,7 +41,7 @@ function TableManager() {
         setLoading(true);
         setError('');
         setSuccessMessage('');
-        setTableName(table); // Устанавливаем выбранное имя таблицы
+        setTableName(table);
 
         try {
             const data = await getTableValues(table);
@@ -92,7 +92,6 @@ function TableManager() {
     return (
         <Container maxWidth="lg">
             <Box sx={{ marginTop: 4, display: 'flex', height: '80vh', gap: 2 }}>
-                {/* Левая колонка для управления таблицами */}
                 <Box sx={{ flex: 1, borderRight: '1px solid #ccc', padding: 2 }}>
                     <Typography variant="h4" gutterBottom>Управление таблицами</Typography>
                     {error && <Alert severity="error">{error}</Alert>}
@@ -128,7 +127,6 @@ function TableManager() {
                     )}
                 </Box>
 
-                {/* Правая колонка для работы с данными */}
                 <Box sx={{ flex: 1, padding: 2 }}>
                     <Typography variant="h4" gutterBottom>Содержимое таблицы</Typography>
                     {loading ? (
