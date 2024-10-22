@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     TextField,
     Button,
@@ -7,11 +7,15 @@ import {
     Box,
     Alert,
     CircularProgress,
-    List,
-    ListItem,
-    ListItemText
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper
 } from '@mui/material';
-import { getTableValues, createTable, deleteTable, getAllTables } from './ApiService';
+import {getTableValues, createTable, deleteTable, getAllTables} from './ApiService';
 
 function TableManager() {
     const [tableName, setTableName] = useState('');
@@ -79,7 +83,6 @@ function TableManager() {
         try {
             await deleteTable(tableName);
             setSuccessMessage('Таблица успешно удалена.');
-            // Обновление списка таблиц после удаления
             const data = await getAllTables();
             setTables(data);
         } catch (error) {
@@ -91,53 +94,87 @@ function TableManager() {
 
     return (
         <Container maxWidth="lg">
-            <Box sx={{ marginTop: 4, display: 'flex', height: '80vh', gap: 2 }}>
-                <Box sx={{ flex: 1, borderRight: '1px solid #ccc', padding: 2 }}>
-                    <Typography variant="h4" gutterBottom>Управление таблицами</Typography>
+            <Box sx={{marginTop: 4, display: 'flex', height: '80vh', gap: 2}}>
+
+                <Box sx={{flex: '0 0 25%', borderRight: '2px solid black', padding: 2}}>
+                    <Typography variant="h5" gutterBottom>Список таблиц</Typography>
                     {error && <Alert severity="error">{error}</Alert>}
                     {successMessage && <Alert severity="success">{successMessage}</Alert>}
                     {loadingTables ? (
-                        <CircularProgress />
+                        <CircularProgress/>
                     ) : (
-                        <>
-                            <List>
-                                {tables.map((table) => (
-                                    <ListItem button key={table} onClick={() => handleGetTable(table)}>
-                                        <ListItemText primary={table} />
-                                    </ListItem>
-                                ))}
-                            </List>
-                            <TextField
-                                label="Название таблицы"
-                                value={tableName}
-                                onChange={(e) => setTableName(e.target.value)}
-                                fullWidth
-                                variant="outlined"
-                                sx={{ marginTop: 2 }}
-                            />
-                            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 1 }}>
-                                <Button variant="contained" color="success" onClick={handleCreateTable}>
-                                    Создать таблицу
-                                </Button>
-                                <Button variant="contained" color="error" onClick={handleDeleteTable}>
-                                    Удалить таблицу
-                                </Button>
-                            </Box>
-                        </>
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Название таблицы</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {tables.map((table) => (
+                                        <TableRow
+                                            key={table}
+                                            onClick={() => handleGetTable(table)}
+                                            sx={{cursor: 'pointer'}}
+                                        >
+                                            <TableCell>{table}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     )}
                 </Box>
 
-                <Box sx={{ flex: 1, padding: 2 }}>
-                    <Typography variant="h4" gutterBottom>Содержимое таблицы</Typography>
+                <Box sx={{flex: '0 0 40%', borderRight: '2px solid black', padding: 2}}>
+                    <Typography variant="h5" gutterBottom>Управление таблицами</Typography>
+                    <TextField
+                        label="Название таблицы"
+                        value={tableName}
+                        onChange={(e) => setTableName(e.target.value)}
+                        fullWidth
+                        variant="outlined"
+                        sx={{marginTop: 2}}
+                    />
+                    <Box sx={{display: 'flex', justifyContent: 'space-between', marginTop: 2}}>
+                        <Button variant="contained" color="success" onClick={handleCreateTable} fullWidth
+                                sx={{marginRight: 1}}>
+                            Создать таблицу
+                        </Button>
+                        <Button variant="contained" color="error" onClick={handleDeleteTable} fullWidth
+                                sx={{marginLeft: 1}}>
+                            Удалить таблицу
+                        </Button>
+                    </Box>
+                </Box>
+
+                <Box sx={{flex: '0 0 35%', padding: 2}}>
+                    <Typography variant="h5" gutterBottom>Содержимое таблицы</Typography>
                     {loading ? (
-                        <CircularProgress />
+                        <CircularProgress/>
                     ) : tableData ? (
-                        <Box>
-                            <Typography variant="h6">Содержимое таблицы:</Typography>
-                            <pre>{JSON.stringify(tableData, null, 2)}</pre>
-                        </Box>
+                        <TableContainer component={Paper}>
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        {Object.keys(tableData[0]).map((key) => (
+                                            <TableCell key={key}>{key}</TableCell>
+                                        ))}
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {tableData.map((row, index) => (
+                                        <TableRow key={index}>
+                                            {Object.values(row).map((value, idx) => (
+                                                <TableCell key={idx}>{value}</TableCell>
+                                            ))}
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
                     ) : (
-                        <Typography variant="body1">Пожалуйста, выберите таблицу, чтобы увидеть ее содержимое.</Typography>
+                        <Typography>Выберите таблицу, чтобы просмотреть данные.</Typography>
                     )}
                 </Box>
             </Box>

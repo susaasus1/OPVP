@@ -1,5 +1,6 @@
 package org.itmo.master.opvp.storage;
 
+import java.util.List;
 import java.util.Map;
 
 public interface IStorage {
@@ -12,5 +13,9 @@ public interface IStorage {
 
     Map<String, Map<String, String>> getStorage();
 
+    List<String> getAllTables();
+
     StorageConfiguration getConfig();
+
+
 }

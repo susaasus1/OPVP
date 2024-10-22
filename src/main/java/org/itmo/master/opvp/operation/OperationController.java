@@ -1,11 +1,10 @@
 package org.itmo.master.opvp.operation;
 
+import org.itmo.master.opvp.util.CORSInterceptor;
 import ru.tinkoff.kora.http.common.annotation.HttpRoute;
+import ru.tinkoff.kora.http.common.annotation.InterceptWith;
 import ru.tinkoff.kora.http.common.annotation.Path;
 import ru.tinkoff.kora.http.common.annotation.Query;
-import ru.tinkoff.kora.http.common.body.HttpBody;
-import ru.tinkoff.kora.http.common.header.HttpHeaders;
-import ru.tinkoff.kora.http.server.common.HttpServerResponse;
 import ru.tinkoff.kora.http.server.common.annotation.HttpController;
 import ru.tinkoff.kora.json.common.annotation.Json;
 
@@ -17,6 +16,7 @@ import static ru.tinkoff.kora.http.common.HttpMethod.PATCH;
 import static ru.tinkoff.kora.http.common.HttpMethod.POST;
 import static ru.tinkoff.kora.http.common.HttpMethod.PUT;
 
+@InterceptWith(CORSInterceptor.class)
 @HttpController("/api/v1/operations")
 public final class OperationController {
 
@@ -24,6 +24,12 @@ public final class OperationController {
 
     public OperationController(IOperationService operationService) {
         this.operationService = operationService;
+    }
+
+    @HttpRoute(method = GET, path = "/tables")
+    @Json
+    public List<String> createTable() {
+        return operationService.getAllTables();
     }
 
     @HttpRoute(method = POST, path = "/table/{table}")
@@ -37,12 +43,9 @@ public final class OperationController {
     }
 
     @HttpRoute(method = GET, path = "/table/{table}")
-    public HttpServerResponse getAllValues(@Path("table") String table) {
-        return HttpServerResponse.of(200,
-                HttpHeaders.of("Access-Control-Allow-Origin", "*",
-                "Access-Control-Allow-Methods", "GET, POST, OPTIONS",
-                "Access-Control-Allow-Headers", "Content-Type"),
-                HttpBody.json(operationService.getAll(table).toString()));
+    @Json
+    public List<String> getAllValues(@Path("table") String table) {
+        return operationService.getAll(table);
     }
 
     @HttpRoute(method = GET, path = "/table/{table}/key/{key}")
@@ -92,5 +95,4 @@ public final class OperationController {
     public void clearAll(@Path("table") String table) {
         operationService.clear(table);
     }
-
 }

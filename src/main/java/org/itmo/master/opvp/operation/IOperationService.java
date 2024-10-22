@@ -6,9 +6,12 @@ import java.util.List;
 
 public interface IOperationService {
 
+
     void createTable(String tableName);
 
     void dropTable(String tableName);
+
+    List<String> getAllTables();
 
     List<String> getAll(String tableName);
 

@@ -30,6 +30,11 @@ public final class OperationService implements IOperationService {
         storage.dropTable(tableName);
     }
 
+    @Override
+    public List<String> getAllTables() {
+        return storage.getAllTables();
+    }
+
     //Data manipulation
     @Override
     public List<String> getAll(String tableName) {

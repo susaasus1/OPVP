@@ -33,6 +33,6 @@ class StorageTest {
         StorageConfiguration config = new StorageConfiguration(1024L, null);
         Storage storage = new Storage(config);
 
-        assertTrue(storage.getStorage() instanceof Map);
+        assertInstanceOf(Map.class, storage.getStorage());
     }
 }
