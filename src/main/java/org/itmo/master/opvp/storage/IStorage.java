@@ -1,26 +1,21 @@
 package org.itmo.master.opvp.storage;
 
-import jakarta.annotation.Nullable;
-
 import java.util.List;
+import java.util.Map;
 
-//String String
-public interface IStorage<K, V> {
+public interface IStorage {
 
-    List<V> getAll();
+    void createTable(String tableName);
 
-    V get(K key);
+    void dropTable(String tableName);
 
-    @Nullable
-    V getIfPresent(K key);
+    ITable<String, String> getTable(String tableName);
 
-    void add(K key, V value);
+    Map<String, Map<String, String>> getStorage();
 
-    void update(K key, V value);
+    List<String> getAllTables();
 
-    void remove(K key);
-
-    void clear();
+    StorageConfiguration getConfig();
 
 
 }

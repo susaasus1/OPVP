@@ -1,0 +1,48 @@
+import org.gradle.api.initialization.resolve.DependencyResolutionManagement
+
+dependencyResolutionManagement { DependencyResolutionManagement it ->
+    it.versionCatalogs {
+        libs {
+            version("kora", "1.1.8")
+
+            version("junit-jupiter", "5.8.1")
+            version("junit-platform-launcher", "1.8.1")
+            version("slf4j", "2.0.3")
+
+            // kora
+            library("kora-parent", "ru.tinkoff.kora", "kora-parent").versionRef("kora")
+            library("kora-annotation-processors", "ru.tinkoff.kora", "annotation-processors").versionRef("kora")
+
+            library("kora-scheduling-jdk","ru.tinkoff.kora","scheduling-jdk").withoutVersion()
+            library("kora-scheduling-quartz", "ru.tinkoff.kora", "scheduling-quartz").withoutVersion()
+            library("kora-http-server-undertow", "ru.tinkoff.kora", "http-server-undertow").withoutVersion()
+            library("kora-logging-logback", "ru.tinkoff.kora", "logging-logback").withoutVersion()
+            library("kora-json-module", "ru.tinkoff.kora", "json-module").withoutVersion()
+            library("kora-openapi-management", "ru.tinkoff.kora", "openapi-management").withoutVersion()
+
+            bundle("kora-base", [
+                    "kora-http-server-undertow",
+                    "kora-logging-logback",
+                    "kora-json-module",
+            ])
+
+            library("kora-openapi-generator", "ru.tinkoff.kora", "openapi-generator").versionRef('kora')
+            library("kora-openapi-management", "ru.tinkoff.kora", "openapi-management").versionRef('kora')
+            library("kora-http-client", "ru.tinkoff.kora", "http-client-async").withoutVersion()
+            library("kora-config-common", "ru.tinkoff.kora", "config-common").withoutVersion()
+            library("kora-config-hocon", "ru.tinkoff.kora", "config-hocon").withoutVersion()
+
+
+            // libs
+            library("slf4j", "org.slf4j", "slf4j-simple").versionRef("slf4j")
+
+            //test libs
+            library("junit-engine", "org.junit.jupiter", "junit-jupiter-engine").versionRef("junit-jupiter")
+            library("junit-jupiter", "org.junit.jupiter", "junit-jupiter").versionRef("junit-jupiter")
+            library("junit-platform-launcher", "org.junit.platform", "junit-platform-launcher").version("1.8.1")
+
+            library("logback", "ch.qos.logback", "logback-classic").version("1.4.11")
+            library("assertj", "org.assertj", "assertj-core").version("3.21.0")
+        }
+    }
+}

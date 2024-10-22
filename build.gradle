@@ -10,8 +10,8 @@ repositories {
 group = "org.itmo.master.opvp"
 version = "0.1.0-SNAPSHOT"
 
-sourceCompatibility = JavaVersion.VERSION_21
-targetCompatibility = JavaVersion.VERSION_21
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 mainClassName = "org.itmo.master.opvp.Application"
 
@@ -30,6 +30,15 @@ dependencies {
     implementation "ru.tinkoff.kora:http-server-undertow"
     implementation "ru.tinkoff.kora:json-module"
     implementation "ru.tinkoff.kora:config-hocon"
-
+    implementation "ru.tinkoff.kora:openapi-management"
     implementation "ch.qos.logback:logback-classic:1.4.8"
+
+    testRuntimeOnly libs.junit.engine
+    testImplementation libs.junit.jupiter
+    testImplementation libs.junit.platform.launcher
+    testImplementation libs.assertj
+}
+
+test {
+    useJUnitPlatform()
 }

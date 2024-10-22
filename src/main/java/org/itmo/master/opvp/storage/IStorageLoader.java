@@ -1,25 +1,24 @@
 package org.itmo.master.opvp.storage;
 
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.Executor;
 
-public interface IStorageLoader<K, V> {
+public interface IStorageLoader {
 
-    IStorage<K, V> load();
+    IStorage load(StorageConfiguration config);
 
-    default CompletableFuture<IStorage<K, V>> asyncLoad(Executor executor) {
-        return CompletableFuture.supplyAsync(this::load, executor)
+    default CompletableFuture<IStorage> asyncLoad(Executor executor, StorageConfiguration config) {
+        return CompletableFuture.supplyAsync(() -> load(config), executor)
                 .exceptionally(ex -> {
                     throw new CompletionException(ex);
                 });
     }
 
-    void save(IStorage<K, V> storage);
+    void save(IStorage storage, StorageConfiguration config);
 
-    default CompletableFuture<Void> asyncSave(IStorage<K, V> storage, Executor executor) {
-        return CompletableFuture.runAsync(() -> save(storage), executor)
+    default CompletableFuture<Void> asyncSave(IStorage storage, StorageConfiguration config, Executor executor) {
+        return CompletableFuture.runAsync(() -> save(storage, config), executor)
                 .exceptionally(ex -> {
                     throw new CompletionException(ex);
                 });
